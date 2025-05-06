@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Book List{% endblock %}
+
+{% block content %}
+<h1>Available Books</h1>
+
+<a href="{% url 'add_book' %}">
+    <button class="btn btn-primary">Add New Book</button>
+</a>
+
+<ul class="list-group mt-4">
+    {% for book in books %}
+        <li class="list-group-item">
+            <strong>{{ book.title }}</strong> by {{ book.author }}
+            <a href="{% url 'book_detail' book.id %}" class="btn btn-info btn-sm float-end">Details</a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No books available.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
