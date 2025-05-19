@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block content %}
+<div class="card mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+        <h3 class="card-title mb-4 text-center">Edit Book</h3>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                {{ form.title|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Author</label>
+                {{ form.author|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Published Date</label>
+                {{ form.published_date|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Genre</label>
+                {{ form.genre|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                {{ form.description|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cover Image</label><br>
+                {{ form.cover }}
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'book_detail' book.id %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

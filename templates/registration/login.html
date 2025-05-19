@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+        <div class="text-center mb-3">
+            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User Icon" style="width: 60px;">
+        </div>
+        <h2 class="text-center mb-3">Sign in</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary w-100 mt-2">Login</button>
+        </form>
+        <hr>
+        <p class="text-center">
+            Don't have an account?
+            <a href="{% url 'signup' %}">Create one</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

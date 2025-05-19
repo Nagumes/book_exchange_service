@@ -1,14 +1,18 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 
-# Функция для автоматического редиректа с "/" на "/signup/"
 def root_redirect(request):
-    return redirect('signup')  # Перенаправление на страницу регистрации
+    return redirect('signup')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Административная панель
-    path('', root_redirect),  # 🔹 стартовая страница ведёт на /signup/
-    path('books/', include('books.urls')),  # Включаем URL'ы из приложения books
-    path('accounts/', include('django.contrib.auth.urls')),  # URL'ы для аутентификации Django
+    path('admin/', admin.site.urls),
+    path('', root_redirect),
+    path('books/', include('books.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

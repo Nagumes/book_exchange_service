@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}My Books{% endblock %}
+
+{% block content %}
+<h1>My Books</h1>
+
+<ul class="list-group mt-4">
+    {% for book in books %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+                <strong>{{ book.title }}</strong> by {{ book.author }}<br>
+                <p>Published on: {{ book.published_date }}</p>
+                <p>Genre: {{ book.genre }}</p>
+
+                {% if book.owner.profile.avatar %}
+                    <img src="{{ book.owner.profile.avatar.url }}" alt="Avatar"
+                         style="width: 40px; height: 40px; border-radius: 50%;">
+                {% endif %}
+
+                <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-outline-secondary mt-2">Details</a>
+            </div>
+            {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="Cover"
+                     style="width: 80px; height: auto; margin-left: 10px;">
+            {% endif %}
+        </li>
+    {% empty %}
+        <li class="list-group-item">You have not added any books yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

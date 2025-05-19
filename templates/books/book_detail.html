@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Book Details{% endblock %}
+
+{% block content %}
+<div class="card p-4">
+    <div class="row g-4 align-items-start">
+        <!-- Обложка слева -->
+        {% if book.cover %}
+            <div class="col-md-4 text-center">
+                <img src="{{ book.cover.url }}" alt="Cover"
+                     class="img-fluid rounded shadow" style="max-height: 450px;">
+            </div>
+        {% endif %}
+
+        <!-- Детали книги справа -->
+        <div class="col-md-8">
+            <h2>{{ book.title }}</h2>
+            <h5 class="text-muted">by {{ book.author }}</h5>
+            <p><strong>Published on:</strong> {{ book.published_date }}</p>
+            <p><strong>Genre:</strong> {{ book.genre }}</p>
+
+            {% if book.owner.profile.avatar %}
+                <div class="d-flex align-items-center mb-2">
+                    <img src="{{ book.owner.profile.avatar.url }}" alt="Avatar"
+                         style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <strong>Owner:</strong> {{ book.owner.profile.nickname|default:book.owner.username }}
+                </div>
+            {% else %}
+                <p><strong>Owner:</strong> {{ book.owner.profile.nickname|default:book.owner.username }}</p>
+            {% endif %}
+
+            <hr>
+            <p><strong>Description:</strong></p>
+            <p>{{ book.description }}</p>
+
+            {% if user == book.owner or user.is_staff %}
+                <a href="{% url 'edit_book' book.id %}" class="btn btn-warning me-2">Edit</a>
+                <a href="{% url 'delete_book' book.id %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+
+            <a href="{% url 'book_list' %}" class="btn btn-secondary mt-3">Back to Book List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
