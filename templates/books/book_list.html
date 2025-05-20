@@ -23,7 +23,8 @@
         <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
     </div>
     <div class="col-md-2 d-flex align-items-end">
-        <a href="{% url 'add_book' %}" class="btn btn-success w-100">+ Add New Book</a>
+        <!-- Здесь добавляем namespace 'books:' -->
+        <a href="{% url 'books:add_book' %}" class="btn btn-success w-100">+ Add New Book</a>
     </div>
 </form>
 
@@ -47,7 +48,8 @@
                     {% endif %}
                     <small class="text-muted">Owner: {{ book.owner.profile.nickname|default:book.owner.username }}</small>
                 </div>
-                <a href="{% url 'book_detail' book.id %}" class="btn btn-outline-primary btn-sm mt-3 mt-auto">View Details</a>
+                <!-- Здесь тоже с namespace 'books:' -->
+                <a href="{% url 'books:book_detail' book.id %}" class="btn btn-outline-primary btn-sm mt-3 mt-auto">View Details</a>
             </div>
         </div>
     </div>

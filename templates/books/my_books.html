@@ -7,22 +7,28 @@
 
 <ul class="list-group mt-4">
     {% for book in books %}
-        <li class="list-group-item d-flex justify-content-between align-items-start">
+        <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
             <div>
                 <strong>{{ book.title }}</strong> by {{ book.author }}<br>
-                <p>Published on: {{ book.published_date }}</p>
-                <p>Genre: {{ book.genre }}</p>
+                <p class="mb-1">Published on: {{ book.published_date }}</p>
+                <p class="mb-1">Genre: {{ book.genre }}</p>
+                <p class="mb-1">{{ book.description }}</p>
 
                 {% if book.owner.profile.avatar %}
                     <img src="{{ book.owner.profile.avatar.url }}" alt="Avatar"
-                         style="width: 40px; height: 40px; border-radius: 50%;">
+                         style="width: 40px; height: 40px; border-radius: 50%; margin-bottom: 8px;">
                 {% endif %}
 
-                <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-outline-secondary mt-2">Details</a>
+                <a href="{% url 'books:book_detail' book.id %}" class="btn btn-sm btn-outline-secondary mt-2">Details</a>
+
+                {% if user == book.owner or user.is_staff %}
+                    <a href="{% url 'books:edit_book' book.id %}" class="btn btn-sm btn-warning mt-2 ms-2">Edit</a>
+                    <a href="{% url 'books:delete_book' book.id %}" class="btn btn-sm btn-danger mt-2 ms-2">Delete</a>
+                {% endif %}
             </div>
             {% if book.cover %}
                 <img src="{{ book.cover.url }}" alt="Cover"
-                     style="width: 80px; height: auto; margin-left: 10px;">
+                     style="max-width: 80px; max-height: 120px; object-fit: contain; margin-left: 10px;">
             {% endif %}
         </li>
     {% empty %}

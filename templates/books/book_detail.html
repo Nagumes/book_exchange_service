@@ -1,45 +1,38 @@
 {% extends "base.html" %}
 
-{% block title %}Book Details{% endblock %}
+{% block title %}{{ book.title }} Details{% endblock %}
 
 {% block content %}
-<div class="card p-4">
-    <div class="row g-4 align-items-start">
+<div class="container mt-4">
+    <div class="row">
         <!-- Обложка слева -->
-        {% if book.cover %}
-            <div class="col-md-4 text-center">
-                <img src="{{ book.cover.url }}" alt="Cover"
-                     class="img-fluid rounded shadow" style="max-height: 450px;">
-            </div>
-        {% endif %}
-
-        <!-- Детали книги справа -->
-        <div class="col-md-8">
-            <h2>{{ book.title }}</h2>
-            <h5 class="text-muted">by {{ book.author }}</h5>
-            <p><strong>Published on:</strong> {{ book.published_date }}</p>
-            <p><strong>Genre:</strong> {{ book.genre }}</p>
-
-            {% if book.owner.profile.avatar %}
-                <div class="d-flex align-items-center mb-2">
-                    <img src="{{ book.owner.profile.avatar.url }}" alt="Avatar"
-                         style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <strong>Owner:</strong> {{ book.owner.profile.nickname|default:book.owner.username }}
-                </div>
+        <div class="col-md-4">
+            {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="Cover" class="img-fluid rounded shadow-sm" style="max-height: 450px; object-fit: contain;">
             {% else %}
-                <p><strong>Owner:</strong> {{ book.owner.profile.nickname|default:book.owner.username }}</p>
+                <div class="border rounded d-flex align-items-center justify-content-center" style="height: 450px;">
+                    <span class="text-muted">No cover image</span>
+                </div>
             {% endif %}
+        </div>
 
+        <!-- Информация справа -->
+        <div class="col-md-8">
+            <h2 class="mb-3">{{ book.title }}</h2>
+            <p><strong>Author:</strong> {{ book.author }}</p>
+            <p><strong>Published Date:</strong> {{ book.published_date }}</p>
+            <p><strong>Genre:</strong> {{ book.genre }}</p>
             <hr>
-            <p><strong>Description:</strong></p>
-            <p>{{ book.description }}</p>
+            <h5>Description</h5>
+            <p style="white-space: pre-wrap;">{{ book.description }}</p>
 
-            {% if user == book.owner or user.is_staff %}
-                <a href="{% url 'edit_book' book.id %}" class="btn btn-warning me-2">Edit</a>
-                <a href="{% url 'delete_book' book.id %}" class="btn btn-danger">Delete</a>
-            {% endif %}
-
-            <a href="{% url 'book_list' %}" class="btn btn-secondary mt-3">Back to Book List</a>
+            <div class="mt-4">
+                {% if user == book.owner or user.is_staff %}
+                    <a href="{% url 'books:edit_book' book.id %}" class="btn btn-warning me-2">Edit</a>
+                    <a href="{% url 'books:delete_book' book.id %}" class="btn btn-danger me-2">Delete</a>
+                {% endif %}
+                <a href="{% url 'books:start_chat' book.owner.id %}" class="btn btn-info">Contact Owner</a>
+            </div>
         </div>
     </div>
 </div>

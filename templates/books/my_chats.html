@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}My Chats{% endblock %}
+
+{% block content %}
+<h1>My Chats</h1>
+
+<ul class="list-group">
+  {% for item in chats_with_unread %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        {% for u in item.other_users %}
+          {% if u.profile.avatar %}
+            <img src="{{ u.profile.avatar.url }}" alt="{{ u.username }} avatar"
+                 class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+          {% else %}
+            <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2"
+                 style="width: 40px; height: 40px; font-weight: bold;">
+              {{ u.username|slice:":1"|upper }}
+            </div>
+          {% endif %}
+          <span>{{ u.username }}</span>
+        {% endfor %}
+      </div>
+
+      {% if item.unread_count > 0 %}
+        <span class="badge bg-primary rounded-pill">{{ item.unread_count }} new</span>
+      {% endif %}
+
+      <a href="{% url 'books:chat_detail' item.chat.id %}" class="btn btn-sm btn-outline-primary ms-3">Open chat</a>
+    </li>
+  {% empty %}
+    <li class="list-group-item">You have no chats yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

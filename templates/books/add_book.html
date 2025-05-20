@@ -6,7 +6,7 @@
 {% block content %}
 <h2 class="mb-4">Add a New Book</h2>
 
-<form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
+<form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm" novalidate>
     {% csrf_token %}
     {% for field in form %}
         <div class="mb-3">

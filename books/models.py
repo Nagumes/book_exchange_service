@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
 
 # Модель книги
 class Book(models.Model):
@@ -27,7 +29,7 @@ class Book(models.Model):
         return self.title
 
 
-# Модель запроса обмена книгами (если нужна)
+# Модель запроса обмена книгами
 class ExchangeRequest(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Книга для обмена
     requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests')  # Запрашивающий книгу
@@ -45,4 +47,35 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+
+
+class Chat(models.Model):
+    participants = models.ManyToManyField(User, related_name='chats')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Chat {self.id} ({', '.join(p.username for p in self.participants.all())})"
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['timestamp']
+
+
+User = get_user_model()
+
+class ChatUserStatus(models.Model):
+    chat = models.ForeignKey('Chat', on_delete=models.CASCADE, related_name='statuses')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    last_read = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('chat', 'user')
+
+    def __str__(self):
+        return f'{self.user.username} status in chat {self.chat.id}'
 
